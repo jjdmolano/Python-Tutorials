@@ -1,28 +1,25 @@
-import pyautogui
+import pyautogui as pg
 import time
-import sys
+import random
 from datetime import datetime
 
-pyautogui.FAILSAFE = False
+pg.FAILSAFE = False
 numMin = None
+xMax, yMax = pg.size()
+moveTypes = [pg.easeInQuad, pg.easeOutQuad, pg.easeInOutQuad, pg.easeInBounce, pg.easeInOutElastic]
 
 
 def main():
-    if ((len(sys.argv) < 2) or sys.argv[1].isalpha() or int(sys.argv[1]) < 1):
-        numMin = 5  # move curser after numMin minutes
-    else:
-        numMin = int(sys.argv[1])
     while True:
-        x = 0
-        while x < numMin:
-            time.sleep(60)
-            x += 1
-        for i in range(0, 50):
-            pyautogui.moveTo(i*6+50, i*4)
-        pyautogui.moveTo(1, 1)
-        for i in range(0, 3):
-            pyautogui.press('shift')
-        print(f'Movement made at {datetime.now().time()}')
+        numMin = random.randint(1,5)
+        x = 60*numMin
+        time.sleep(x)
+        xMove = random.randint(1, xMax - 1)
+        yMove = random.randint(1, yMax - 1)
+        duration = random.randint(1, 3)
+        chosenType = random.choice(moveTypes)
+        pg.moveTo(xMove, yMove, duration, chosenType)
+        print(f'Movement made at {datetime.now().time()} to ({xMove},{yMove}) with {chosenType.__name__}')
 
 
 if __name__ == '__main__':
